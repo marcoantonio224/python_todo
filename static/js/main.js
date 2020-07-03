@@ -34,7 +34,7 @@ for(let i = 0;  i < checkboxes.length; i++) {
     const data = ['completed', newCompleted]; // [key, value]
     makeRequest(`/todos/${todoID}/set-completed`, 'POST', data)
     .then(()=>{
-      errorElement.className = "";
+      errorElement.className = "hidden";
     })
     .catch(err => {
       console.log(err)
