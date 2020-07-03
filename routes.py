@@ -8,10 +8,12 @@ def handleError():
     print(sys.exc_info())
 
 def routesHandler(app, Todo, db):
+  # Render home page
   @app.route('/')
   def index():
     return render_template('index.html', data = Todo.query.order_by('id').all())
 
+  # Create a todo item
   @app.route('/todos/create', methods=['POST'])
   def create():
     error = False
@@ -32,6 +34,7 @@ def routesHandler(app, Todo, db):
     else:
       return jsonify(body)
 
+  # Update the completion of the todo item
   @app.route('/todos/<todo_id>/set-completed', methods=['POST'])
   def set_completed_todo(todo_id):
     try:
@@ -44,6 +47,19 @@ def routesHandler(app, Todo, db):
     finally:
       db.session.close()
     return redirect(url_for('index'))
+
+  # Delete a todo item
+  @app.route('/todos/<todo_id>/set-completed', methods=['DELETE'])
+  def set_deleted_todo(todo_id):
+    try:
+      Todo.query.filter_by(id=todo_id).delete()
+      db.session.commit()
+    except:
+      handleError()
+    finally:
+      db.session.close()
+    return jsonify({'sucess': True,'todoID':todo_id})
+
 
 
 

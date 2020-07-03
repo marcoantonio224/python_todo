@@ -9,6 +9,7 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
+  width: 200px;
 }
 
 li {
@@ -23,6 +24,7 @@ li button {
   float: right;
   cursor: pointer;
   font-size: 20px;
+  background-color: transparent;
 }
 
 .list-wrapper, .todos-wrapper {

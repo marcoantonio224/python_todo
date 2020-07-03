@@ -1,5 +1,30 @@
 const errorElement = document.getElementById('error');
 
+/*  Custom Fetch Helper  */
+function makeRequest(url, method, data) {
+  // Check to see if data was passed in
+  if(data === undefined) {
+    return fetch(url,
+      { method: method, headers: {'Content-Type': 'application/json' }
+    })
+  } else {
+    // Send request with data to the user
+      let key = data[0];
+      let value = data[1];
+      return fetch(url, {
+                method: method,
+                body: JSON.stringify({
+                  [key] : value
+                }),
+                headers: {
+                  'Content-Type': 'application/json'
+                }
+          })
+  }
+
+}
+
+// ============= API CRUD METHODS =================
 /* ============ CREATE A TODO ITEM ============== */
 document.getElementById('form').onsubmit = (e)=> {
   e.preventDefault();
@@ -16,6 +41,7 @@ document.getElementById('form').onsubmit = (e)=> {
     document.getElementById('todos').appendChild(liItem);
     errorElement.className = "hidden";
     description.value ='';
+    location.reload();
   })
   .catch(err => {
     console.log(err)
@@ -44,16 +70,32 @@ for(let i = 0;  i < checkboxes.length; i++) {
 }
 /* ===================================================== */
 
-function makeRequest(url, method, data) {
-  const key = data[0];
-  const value = data[1];
-  return fetch(url, {
-            method: method,
-            body: JSON.stringify({
-              [key] : value
-            }),
-            headers: {
-              'Content-Type': 'application/json'
-            }
+/* ============ DELETE TODO ITEM =========== */
+  const deleteButtons = document.querySelectorAll('.delete');
+  for(let i =0; i < deleteButtons.length; i++) {
+    const deleteButton = deleteButtons[i];
+    deleteButton.onclick = function(e) {
+      const todoID = e.target.dataset['id'];
+      makeRequest(`/todos/${todoID}/set-completed`, 'DELETE')
+      .then((response)=>{
+        return response.json();
       })
-}
+      .then((jsonResponse) => {
+        console.log(jsonResponse)
+        const { todoID } = jsonResponse;
+        console.log(todoID)
+        const todoItemDelete = document.getElementById('todo-item-'+todoID);
+        console.log(todoItemDelete)
+        todoItemDelete.remove();
+        errorElement.className = "hidden";
+      })
+      .catch(err => {
+        console.log(err)
+        errorElement.className = "";
+      });
+    }
+  }
+/* ===================================================== */
+
+
+
