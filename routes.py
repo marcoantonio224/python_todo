@@ -1,13 +1,12 @@
 from flask import render_template, request, redirect, url_for, jsonify, abort
 import sys
-import os
 
 # Handle errors in api requests
 def handleError():
     db.session.rollback()
     print(sys.exc_info())
 
-def routesHandler(app, Todo, db):
+def routesHandler(app, Todo, TodoList, db):
   # Render Home page
   @app.route('/')
   def index():
@@ -16,7 +15,9 @@ def routesHandler(app, Todo, db):
   # Render a particular List
   @app.route('/lists/<list_id>')
   def get_list_todos(list_id):
-    return render_template('index.html', data = Todo.query.filter_by(list_id=list_id).order_by('id').all())
+    return render_template('index.html', lists=TodoList.query.all(),
+      active_list=TodoList.query.get(list_id),
+      todos = Todo.query.filter_by(list_id=list_id).order_by('id').all())
 
   # Create a todo item
   @app.route('/todos/create', methods=['POST'])

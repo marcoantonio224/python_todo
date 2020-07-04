@@ -21,19 +21,7 @@ list = modelTodoListHandler(db)
 # Create an instance of a Todo model
 todo = modelTodoHandler(db)
 # Pass the app, render_template, and model to route handler and initate routes
-routesHandler(app, todo, db)
-
-# urgentList = list(name="Urgent")
-# todo1 = todo(description="This is really important thing")
-# todo2 = todo(description="Urgent todo 2")
-# todo3 = todo(description="Urgent todo 3")
-
-# todo1.list = urgentList
-# todo2.list = urgentList
-# todo3.list = urgentList
-
-# db.session.add(urgentList)
-# db.session.commit()
+routesHandler(app, todo, list, db)
 
 #Run app
 if __name__ == '__main__':

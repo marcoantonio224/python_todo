@@ -1,6 +1,10 @@
+.main-container {
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
 
 /* Todo list and error message */
-
 .hidden {
   display: none;
 }
@@ -9,7 +13,7 @@ ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 40%;
+  display: inline-block;
 }
 
 li {
@@ -27,7 +31,7 @@ li button {
   background-color: transparent;
 }
 
-.list-wrapper, .todos-wrapper {
+.lists-wrapper, .todos-wrapper {
   display: inline-block;
   vertical-align: top;
 }

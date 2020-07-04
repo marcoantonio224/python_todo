@@ -8,7 +8,6 @@ def modelTodoListHandler(db):
     name = db.Column(db.String(), nullable=False)
     # Initialize a relationship with child model
     todos = db.relationship('Todo', backref='list', lazy=True)
-
   return TodoList
 
 # Child Model for TodoList
