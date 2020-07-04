@@ -8,10 +8,15 @@ def handleError():
     print(sys.exc_info())
 
 def routesHandler(app, Todo, db):
-  # Render home page
+  # Render Home page
   @app.route('/')
   def index():
-    return render_template('index.html', data = Todo.query.order_by('id').all())
+    return redirect(url_for('get_list_todos', list_id = 1))
+
+  # Render a particular List
+  @app.route('/lists/<list_id>')
+  def get_list_todos(list_id):
+    return render_template('index.html', data = Todo.query.filter_by(list_id=list_id).order_by('id').all())
 
   # Create a todo item
   @app.route('/todos/create', methods=['POST'])
