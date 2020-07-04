@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from routes import routesHandler
-from model import modelHandler
+from models import modelTodoHandler, modelTodoListHandler
 from flask_migrate import Migrate
 from flask_debug import Debug
 
@@ -13,11 +13,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://postgres@localhost:5432/todo
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 db = SQLAlchemy(app)
 
-migrate = Migrate(app, db)
 
+# Create migrations throughout application
+migrate = Migrate(app, db)
+# Create an instance of a TodoList model
+modelTodoListHandler(db)
 # Create an instance of a Todo model
-todo = modelHandler(db)
-# Pass the app, render_template, and model to route handler
+todo = modelTodoHandler(db)
+# Pass the app, render_template, and model to route handler and initate routes
 routesHandler(app, todo, db)
 
 #Run app
