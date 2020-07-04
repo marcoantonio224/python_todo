@@ -12,12 +12,35 @@ def routesHandler(app, Todo, TodoList, db):
   def index():
     return redirect(url_for('get_list_todos', list_id = 1))
 
+  #Create a list
+  @app.route('/lists/create', methods=['POST'])
+  def create_list():
+    print('CREATING A s', request.get_json())
+    error = False
+    body = {}
+    try:
+      name = request.get_json()['data']['name']
+      list = TodoList(name = name)
+      db.session.add(list)
+      db.session.commit()
+      body['list'] = name
+    except:
+      error = True
+      handleError()
+    finally:
+      db.session.close()
+    if error:
+      abort(400)
+    else:
+      return jsonify(body)
+
+
   # Render a particular List
   @app.route('/lists/<list_id>')
   def get_list_todos(list_id):
     return render_template('index.html', lists=TodoList.query.all(),
-      active_list=TodoList.query.get(list_id),
-      todos = Todo.query.filter_by(list_id=list_id).order_by('id').all())
+        active_list=TodoList.query.get(list_id),
+        todos = Todo.query.filter_by(list_id=list_id).order_by('id').all())
 
   # Create a todo item
   @app.route('/todos/create', methods=['POST'])
@@ -25,8 +48,9 @@ def routesHandler(app, Todo, TodoList, db):
     error = False
     body = {}
     try:
-      description = request.get_json()['description']
-      todo = Todo(description = description)
+      description = request.get_json()['data']['description']
+      list_id = request.get_json()['data']['list_id']
+      todo = Todo(description = description, list_id = int(list_id))
       db.session.add(todo)
       db.session.commit()
       body['description'] = todo.description
@@ -65,7 +89,3 @@ def routesHandler(app, Todo, TodoList, db):
     finally:
       db.session.close()
     return jsonify({'sucess': True,'todoID':todo_id})
-
-
-
-

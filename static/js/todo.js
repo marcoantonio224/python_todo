@@ -9,27 +9,30 @@ function makeRequest(url, method, data) {
     })
   } else {
     // Send request with data to the user
-      let key = data[0];
-      let value = data[1];
       return fetch(url, {
                 method: method,
                 body: JSON.stringify({
-                  [key] : value
+                  data : data
                 }),
                 headers: {
                   'Content-Type': 'application/json'
                 }
           })
   }
-
 }
+// Assign makeRequest a global function
+window.makeRequest = makeRequest;
 
 // ============= API CRUD METHODS =================
 /* ============ CREATE A TODO ITEM ============== */
 document.getElementById('form').onsubmit = (e)=> {
   e.preventDefault();
-  let description = document.getElementById('description')
-  const data = ['description', description.value]; // [key, value]
+  let description = document.getElementById('description');
+  const list_id = location.pathname.split('').pop();
+  const data = {
+    description: description.value,
+    list_id: list_id
+  }
   // Custom API with fetch method
   makeRequest('/todos/create', 'POST', data)
   .then((response)=>{
@@ -83,7 +86,6 @@ for(let i = 0;  i < checkboxes.length; i++) {
       .then((jsonResponse) => {
         console.log(jsonResponse)
         const { todoID } = jsonResponse;
-        console.log(todoID)
         const todoItemDelete = document.getElementById('todo-item-'+todoID);
         console.log(todoItemDelete)
         todoItemDelete.remove();

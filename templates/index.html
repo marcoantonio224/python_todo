@@ -6,6 +6,11 @@
   <body>
     <div class="main-container">
       <div class="lists-wrapper">
+        <h4>Categorize your todos by lists</h4>
+        <form id="list-form">
+          <input type="text" id='list-name' name='list-name'required='required' />
+          <input type="submit" value='Create' />
+        </form>
         <ul id="lists">
           {% for list in lists %}
             <li>
@@ -34,6 +39,7 @@
         </ul>
       </div>
     </div>
-    <script type="text/javascript" src="/static/js/main.js"></script>
+    <script type="text/javascript" src="/static/js/todo.js"></script>
+    <script type="text/javascript" src="/static/js/list.js"></script>
   </body>
 </html>
