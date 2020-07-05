@@ -89,3 +89,19 @@ def routesHandler(app, Todo, TodoList, db):
     finally:
       db.session.close()
     return jsonify({'sucess': True,'todoID':todo_id})
+
+  # Delete a list
+  @app.route('/list/<list_id>', methods=['DELETE'])
+  def set_deleted_list(list_id):
+    print('DELETING ', list_id,' ***********************')
+    try:
+      list = TodoList.query.get(list_id)
+      for todo in list.todos:
+        db.session.delete(todo)
+      db.session.delete(list)
+      db.session.commit()
+    except:
+      handleError()
+    finally:
+      db.session.close()
+    return jsonify({'sucess': True,'todoID':list_id})

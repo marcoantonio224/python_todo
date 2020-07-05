@@ -84,7 +84,6 @@ for(let i = 0;  i < checkboxes.length; i++) {
         return response.json();
       })
       .then((jsonResponse) => {
-        console.log(jsonResponse)
         const { todoID } = jsonResponse;
         const todoItemDelete = document.getElementById('todo-item-'+todoID);
         console.log(todoItemDelete)

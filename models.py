@@ -7,7 +7,7 @@ def modelTodoListHandler(db):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(), nullable=False)
     # Initialize a relationship with child model
-    todos = db.relationship('Todo', backref='list', lazy=True)
+    todos = db.relationship('Todo', backref='list', lazy=True, cascade="all, delete, delete-orphan")
   return TodoList
 
 # Child Model for TodoList

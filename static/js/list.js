@@ -27,30 +27,30 @@ document.getElementById('list-form').onsubmit = (e)=> {
 
 
 /* ============ DELETE LIST CATEGORY =========== */
-  // const deleteButtons = document.querySelectorAll('.delete');
-  // for(let i =0; i < deleteButtons.length; i++) {
-  //   const deleteButton = deleteButtons[i];
-  //   deleteButton.onclick = function(e) {
-  //     const todoID = e.target.dataset['id'];
-  //     makeRequest(`/todos/${todoID}/set-completed`, 'DELETE')
-  //     .then((response)=>{
-  //       return response.json();
-  //     })
-  //     .then((jsonResponse) => {
-  //       console.log(jsonResponse)
-  //       const { todoID } = jsonResponse;
-  //       console.log(todoID)
-  //       const todoItemDelete = document.getElementById('todo-item-'+todoID);
-  //       console.log(todoItemDelete)
-  //       todoItemDelete.remove();
-  //       errorElement.className = "hidden";
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //       errorElement.className = "";
-  //     });
-  //   }
-  // }
+  const deleteListButtons = document.querySelectorAll('.deleteList');
+  for(let i =0; i < deleteListButtons.length; i++) {
+    const deleteListButton = deleteListButtons[i];
+    deleteListButton.onclick = function(e) {
+      const listID = e.target.dataset['id'];
+      makeRequest(`/list/${listID}`, 'DELETE')
+      .then((response)=>{
+        return response.json();
+      })
+      .then((jsonResponse) => {
+        console.log(jsonResponse)
+        const { todoID } = jsonResponse;
+        console.log(todoID)
+        const todoItemDelete = document.getElementById('todo-item-'+todoID);
+        console.log(todoItemDelete)
+        todoItemDelete.remove();
+        errorElement.className = "hidden";
+      })
+      .catch(err => {
+        console.log(err)
+        errorElement.className = "";
+      });
+    }
+  }
 /* ===================================================== */
 
 
